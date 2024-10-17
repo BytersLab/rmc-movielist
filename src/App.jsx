@@ -11,17 +11,25 @@ function App() {
   // On Mount
   useEffect(() => {
     async function getMovies() {
-      const movies = await fetch(
-        "https://api.themoviedb.org/3/discover/movie",
-        {
-          method: "GET",
-          headers: {
-            Authorization: "Bearer " + import.meta.env.VITE_TMDB_BEARER,
-          },
+      try {
+        const response = await fetch(
+          "https://api.themoviedb.org/3/discover/movie",
+          {
+            method: "GET",
+            headers: {
+              Authorization: "Bearer " + import.meta.env.VITE_TMDB_BEARER,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`API Fetch failed ${response.status}`);
         }
-      );
-      const data = await movies.json();
-      setMovies(data.results);
+        const data = await response.json();
+        setMovies(data.results);
+      } catch (error) {
+        console.log(error);
+      }
     }
     getMovies();
     return () => {};
@@ -46,11 +54,20 @@ function App() {
       </header>
       <main>
         <section className="movie-section">
-          <BSMovieCard
-            img="https://picsum.photos/200/150?random=1"
-            title="Movie 1"
-            text="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sapiente, provident!"
-          />
+          {movies.length >= 1 ? (
+            movies.map((item) => {
+              return (
+                <BSMovieCard
+                  key={item.id}
+                  img={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                  title={item.title}
+                  text={item.overview}
+                />
+              );
+            })
+          ) : (
+            <h3>Sorry no Movies found</h3>
+          )}
         </section>
       </main>
     </>
