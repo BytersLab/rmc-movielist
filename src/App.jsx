@@ -1,12 +1,37 @@
+import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import { BSNavbar } from "./components/BSNavbar.comp.jsx";
 import { BSNavLink } from "./components/BSNavLink.comp.jsx";
 import { BSMovieCard } from "./components/BSMovieCard.comp.jsx";
 
-console.log(import.meta.env);
-
 function App() {
+  const [movies, setMovies] = useState([]);
+
+  // On Mount
+  useEffect(() => {
+    async function getMovies() {
+      const movies = await fetch(
+        "https://api.themoviedb.org/3/discover/movie",
+        {
+          method: "GET",
+          headers: {
+            Authorization: "Bearer " + import.meta.env.VITE_TMDB_BEARER,
+          },
+        }
+      );
+      const data = await movies.json();
+      setMovies(data.results);
+    }
+    getMovies();
+    return () => {};
+  }, []);
+
+  // Update
+  useEffect(() => {
+    console.log(movies);
+  }, [movies]);
+
   return (
     <>
       <header>
