@@ -1,14 +1,19 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Button, Alert } from "react-bootstrap";
-
 import "./App.css";
+import { BSNavbar } from "./components/BSNavbar.comp.jsx";
+import { BSNavLink } from "./components/BSNavLink.comp.jsx";
 
 function App() {
   return (
     <>
-      <Alert variant="info">This is a new Alert</Alert>
-      <h1>Hello from MovieList</h1>
-      <Button variant="success">Click Me</Button>
+      <BSNavbar
+        brand="MovieList"
+        navlinks={[
+          <BSNavLink key="home" href="Home" text="Home" />,
+          <BSNavLink key="movies" href="Movies" text="Movies" />,
+          <BSNavLink key="pricing" href="Pricing" text="Pricing" />,
+        ]}
+      />
     </>
   );
 }
