@@ -4,6 +4,8 @@ import { BSNavbar } from "./components/BSNavbar.comp.jsx";
 import { BSNavLink } from "./components/BSNavLink.comp.jsx";
 import { BSMovieCard } from "./components/BSMovieCard.comp.jsx";
 
+console.log(import.meta.env);
+
 function App() {
   return (
     <>
